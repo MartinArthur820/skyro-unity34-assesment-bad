@@ -10,9 +10,13 @@ public class player : MonoBehaviour
     float lastShot;
     float lastDir = 1f;
     public HudStuff hud;
+    private Rigidbody2D rb;
 
     void Start()
     {
+        rb = gameObject.GetComponent<Rigidbody2D>();
+
+
         DontDestroyOnLoad(this);
         hp = 37;
     }
@@ -25,8 +29,9 @@ public class player : MonoBehaviour
         // alebo Input System. Posuň transform. Pozri README.
         // ============================================================
         /*
-
         */
+
+        rb.linearVelocity = new Vector2(Input.GetAxis("Horizontal") * speed, Input.GetAxis("Vertical") * speed);
 
         // streľba ostáva — overíš, že Play beží, aj keď sa ešte nehýbeš
         if (Input.GetKey(KeyCode.Space))
