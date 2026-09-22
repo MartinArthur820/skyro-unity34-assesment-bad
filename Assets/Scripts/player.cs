@@ -1,14 +1,16 @@
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class player : MonoBehaviour
 {
     public float speed = 5.5f;
     public int hp = 37;
-    public GameObject prefab;
+    public Rigidbody2D bulletPrefab;
     public float fireWait = 0.18f;
+    public float bulletSpeed = 3;
     float lastShot;
-    float lastDir = 1f;
     public HudStuff hud;
     private Rigidbody2D rb;
 
@@ -61,10 +63,22 @@ public class player : MonoBehaviour
             g.HP = hp;
         }
     }
-
     void shoot()
     {
-        try
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+        Rigidbody2D bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bullet.linearVelocity = direction.normalized * bulletSpeed;
+
+        /*Camera camera = Camera.main;
+        Vector2 targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(targetPos);
+        Rigidbody2D bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bullet.linearVelocity = targetPos;
+        */
+
+        /*try
         {
             var b = Instantiate(prefab, transform.position, Quaternion.identity);
             b.transform.parent = null;
@@ -86,7 +100,7 @@ public class player : MonoBehaviour
             col.isTrigger = true;
             col.radius = 0.12f;
             Destroy(b, 1.6f);
-        }
+        }*/
     }
 
     void OnCollisionEnter2D(Collision2D c)

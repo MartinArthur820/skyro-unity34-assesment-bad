@@ -19,9 +19,15 @@ public class gm : MonoBehaviour
     public int wave = 1;
     public bool gameOver;
 
+    GameObject p;
+    player ply;
+    GameObject hpGo;
+    GameObject scGo;
+
     void Awake()
     {
         inst = this;
+        FindReferences();
     }
 
     void Start()
@@ -40,11 +46,6 @@ public class gm : MonoBehaviour
             Time.timeScale = paused ? 0f : 1f;
         }
 
-        var p = GameObject.Find("player");
-        var ply = FindObjectOfType<player>();
-        var hpGo = GameObject.Find("HPText");
-        var scGo = GameObject.Find("ScoreText");
-        hud = FindObjectOfType<HudStuff>();
 
         if (hpGo != null) hpTxt = hpGo.GetComponent<Text>();
         if (scGo != null) scoreTxt = scGo.GetComponent<Text>();
@@ -113,6 +114,14 @@ public class gm : MonoBehaviour
         */
     }
 
+    public void FindReferences()
+    {
+        var p = GameObject.Find("player");
+        var ply = FindObjectOfType<player>();
+        var hpGo = GameObject.Find("HPText");
+        var scGo = GameObject.Find("ScoreText");
+        hud = FindObjectOfType<HudStuff>();
+    }
     public void spawn1()
     {
         Vector3 pos = new Vector3(Random.Range(-7f, 7f), Random.Range(-4f, 4f), 0);
@@ -141,7 +150,7 @@ public class gm : MonoBehaviour
 
     public void hitPlayer(int dmg)
     {
-        var ply = FindObjectOfType<player>();
+        var ply = FindAnyObjectByType<player>();
         if (ply != null)
         {
             ply.hp = ply.hp - dmg;
@@ -152,7 +161,7 @@ public class gm : MonoBehaviour
         var hpGo = GameObject.Find("HPText");
         if (hpGo != null) hpGo.GetComponent<Text>().text = "hp " + HP;
 
-        var hud2 = FindObjectOfType<HudStuff>();
+        var hud2 = FindAnyObjectByType<HudStuff>();
         if (hud2 != null) hud2.upd("hp " + HP);
     }
 }

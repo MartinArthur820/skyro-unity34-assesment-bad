@@ -4,8 +4,14 @@ public class eNemy2 : MonoBehaviour
 {
     public float speed = 1.1f;
     public int hp = 8;
+    public int scoreToAdd;
+    gm gameManager;
     float hitCd;
 
+    private void Awake()
+    {
+        gameManager = FindAnyObjectByType<gm>();
+    }
     void Update()
     {
         var p = GameObject.Find("player");
@@ -38,6 +44,7 @@ public class eNemy2 : MonoBehaviour
             if (hp <= 0)
             {
                 // DEV2-05 — skóre zámerne odpojené (rovnako ako eNemy)
+                gameManager.addScore(scoreToAdd);
                 Destroy(gameObject);
             }
         }
